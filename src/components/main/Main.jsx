@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { usestatevalue } from "../../context";
+import { useStateValue } from "../../context";
 import "./main.css";
 import apple from "../../assets/apple.jpg";
 import orange from "../../assets/apelsin.jpg";
@@ -8,9 +8,15 @@ import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import DeleteIcon from "@mui/icons-material/Delete";
+import Yourprofile from "../yourprofile/Yourprofile";
+import Frontend from "../frontend/Frontend";
+import { Navigate, useNavigate } from "react-router-dom";
 function Main() {
-  const [data, setData] = useState([]);
-  const { setPopal } = usestatevalue();
+  const [data, setData] = React.useState([]);
+  const { setPopal } = useStateValue();
+  const { show } = useStateValue();
+  const { fronet, setFronet } = useStateValue();
+  const navigate = useNavigate();
 
   // useEffect(() => {
   //   (async () => {
@@ -34,68 +40,12 @@ function Main() {
   //   })();
   // }, []);
 
-  console.log(localStorage.getItem("user"));
-  console.log(data);
-  console.log(JSON.parse(localStorage.getItem("user")));
   return (
     <>
       <main onClick={() => setPopal(false)}>
-        <div className="item">
-          <div className="title1">
-            <h1>Your profile</h1>
+        {show && <Yourprofile />}
 
-            <div className="title4">
-              <div className="title3">
-                <h1>
-                  {JSON.parse(localStorage.getItem("user"))
-                    .name.toUpperCase()
-                    .slice(0, 1)}
-                </h1>
-              </div>
-
-              <div className="title11">
-                <div className="title10">
-                  <h1>
-                    {JSON.parse(localStorage.getItem("user"))
-                      .name.charAt(0)
-                      .toUpperCase() +
-                      JSON.parse(localStorage.getItem("user")).name.slice(1)}
-                  </h1>
-
-                  <Stack direction="row" spacing={2}>
-                    <Button
-                      style={{
-                        width: "70px",
-                        height: "27px",
-                        background: "green",
-                        color: "white",
-                      }}
-                      variant="outlined"
-                    >
-                      Active
-                    </Button>
-                  </Stack>
-                </div>
-                <p>{JSON.parse(localStorage.getItem("user")).username}</p>
-              </div>
-            </div>
-          </div>
-          <div className="title2">
-            <Button
-              style={{ width: "200px", height: "40px" }}
-              variant="contained"
-            >
-              <ContentCopyIcon /> Copy UserName
-            </Button>
-            <Button
-              style={{ width: "200px", background: "red", height: "40px" }}
-              variant="contained"
-            >
-              <DeleteIcon />
-              Delete AccounT
-            </Button>
-          </div>
-        </div>
+        {fronet && <Frontend />}
       </main>
     </>
   );

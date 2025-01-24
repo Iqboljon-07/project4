@@ -14,15 +14,40 @@ import Select from "@mui/material/Select";
 import SettingsIcon from "@mui/icons-material/Settings";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import axios from "axios";
+import { useStateValue } from "../../context";
+import Search from "../search/Search";
 function Navbar() {
   const [age, setAge] = React.useState("");
+  const { search, setSearch } = useStateValue();
+  const { datas, setDatas } = useStateValue();
+  const { join, setJoin } = useStateValue();
+
   const navigate = useNavigate();
 
   const handleChange = (event) => {
     setAge(event.target.value);
+
     // if (event.target.value === 10) {
     //   localStorage.removeItem("token"), navigate("/login");//remove qilish 2-usul
     // }
+  };
+
+  const onChange = async (e) => {
+    setSearch(e.target.value);
+    let response = await axios.get(
+      `https://nt-shopping-list.onrender.com/api/groups/search`,
+      {
+        headers: {
+          "x-auth-token": `${localStorage.getItem("token")}`,
+        },
+        params: {
+          q: search,
+        },
+      }
+    );
+
+    setDatas(response.data);
   };
 
   return (
@@ -37,7 +62,12 @@ function Navbar() {
           </Stack>
         </div>
 
-        <input type="text" placeholder="search" />
+        <input
+          value={search}
+          onChange={onChange}
+          type="text"
+          placeholder="search"
+        />
 
         <div className="nav_title2">
           <AutorenewIcon />
@@ -77,6 +107,9 @@ function Navbar() {
           </Box>
         </div>
       </nav>
+      {/* 
+      {search ? <Search /> : setJoin(false)} */}
+      {search && <Search />}
     </>
   );
 }

@@ -1,0 +1,173 @@
+.detail{
+  width: 100%;
+  display: flex;
+align-items: center;
+height: auto;
+margin: 0 auto;
+
+justify-content: center;
+
+margin-top: 10px;
+
+}
+
+.detail_item{
+
+    width:calc(100% - 250px );
+    
+ 
+
+
+position: relative;
+top:-660px;
+right: -125px;
+margin: auto;
+
+height: auto;
+
+
+display: flex;
+flex-direction: column;
+
+
+}
+
+ .detail_title{
+
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+  color:#ffffff;
+  height: 80px;
+
+
+ 
+align-items: center;
+/* background-color: red; */
+
+
+}
+ 
+.detail_title2{
+
+
+
+
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  grid-auto-rows:auto;
+  gap:40px;
+  padding: 20px;
+
+ 
+}
+
+.detail_items{
+
+  border-radius: 10px;
+  padding: 15px;
+  display: flex;
+flex-direction: column;
+gap:20px;
+height: 100vh;
+}
+.items_title{
+
+width:100%;
+height: auto;
+border: solid 0.25px rgb(176, 174, 174);
+border-radius: 5px;
+
+
+}
+.items_title1{
+padding:20px 10px;
+border: solid 1px rgb(176, 174, 174);
+display: flex;
+align-items: center;
+justify-content: space-between;
+
+
+}
+
+.detail_title2 form button{
+
+padding:10px;
+background-color: blue;
+color:#ffffff;
+
+border: none;
+font-size: 10px;
+padding-left: 4px;
+
+
+
+} 
+.icons{
+
+  display: flex;
+  gap:10px
+}
+
+.icons svg{
+  background: green;
+  color: white;
+  padding: 5px;
+  font-size:  32px;
+  border-radius: 5px;
+
+
+}
+.icons svg:last-child{
+  background-color: red;
+}
+
+
+
+.span{
+
+
+  background-color: blue;
+ padding:5px 10px;
+  border-radius: 5px;
+  color: #fff;
+  margin: 5px;
+  border:none;
+  text-align: center;
+
+
+
+
+}
+
+
+.detail_title button{
+width:250px;
+
+height: 30px;
+background-color: aliceblue;
+display: flex;
+
+align-items: center;
+
+}
+
+
+.members_title{
+
+
+
+
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  grid-auto-rows:auto;
+  gap:40px;
+  padding: 20px;
+
+ border:0.25px solid grey;
+ display: flex;
+ justify-content: space-between;
+
+ 
+}
+/* HTML: <div class="loader"></div> */

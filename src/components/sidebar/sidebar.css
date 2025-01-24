@@ -2,7 +2,7 @@
 
 
     width:250px;
-    height: 90vh;
+    height: 190vh;
 background-color: #f9f9f9;
     display: grid;
     grid-template-columns:100%;
@@ -10,7 +10,7 @@ background-color: #f9f9f9;
     gap:20px;
     padding:40px 10px;
    justify-content: center;
-   
+   margin-top:70px;
 
     
     }
@@ -40,7 +40,7 @@ color:blue;
       background-color: rgb(171, 171, 171);
         
     }
-    .accordion:hover{
+    .typografy_item:hover{
 
 
         cursor: pointer;
@@ -48,3 +48,42 @@ color:blue;
       background-color: rgb(171, 171, 171);
         
     }
+
+    .container_typografy{
+
+         display:grid;
+    
+        
+          
+          
+          
+         gap:20px;
+         grid-template-columns: 100%;
+         
+           
+
+    }
+    .typografy{
+
+display: grid;
+grid-template-columns: 100%;
+         grid-auto-rows: 40px;
+    }
+    .typografy_item{
+   
+      background-color: rgb(241, 238, 238);
+  
+     display: flex;
+     align-items: center;
+
+        
+    }
+    .container_typografy1{
+
+        display: flex;
+        flex-direction: column;
+        gap:20px;
+   
+      
+    }
+   

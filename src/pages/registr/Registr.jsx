@@ -4,59 +4,47 @@ import logo from "../../assets/logo.svg";
 import { Navigate, NavLink, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "./style.css";
+import * as Yup from "yup";
+import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
-import Box from "@mui/material/Box";
-import IconButton from "@mui/material/IconButton";
+import { ErrorMessage, Field, Form, Formik } from "formik";
+import { useStateValue } from "../../context";
 
-import OutlinedInput from "@mui/material/OutlinedInput";
-import InputLabel from "@mui/material/InputLabel";
-import InputAdornment from "@mui/material/InputAdornment";
-
-import FormControl from "@mui/material/FormControl";
-
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
+const SignupSchema = Yup.object({
+  name: Yup.string()
+    .min(4, "Kamida 4 Harf qatnashsin")
+    .max(10, "Ko'pi bilan 10 ta so'z qatnashsin")
+    .required("Maydon bo'sh bolmasligi kerak"),
+  username: Yup.string()
+    .min(4, "Kamida 4 Harf qatnashsin")
+    .max(10, "Ko'pi bilan 10 ta  so'z qatnashsin")
+    .required("Maydon bo'sh bolmasligi kerak"),
+  password: Yup.string()
+    .min(6, "Kamida 6 son qatnashsin")
+    .max(10, "Ko'pi bilan 10 ta so'z qatnashsin")
+    .matches(
+      /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$/,
+      "Parol harflar va raqamlardan iborat bo'lishi kerak"
+    )
+    .required("Maydon bo'sh bolmasligi kerak"),
+});
 
 function Registr() {
-  const name = useRef(null);
-  const username = useRef(null);
-  const password = useRef(null);
-  const [showPassword, setShowPassword] = React.useState(false);
-
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
-
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
-  };
-
-  const handleMouseUpPassword = (event) => {
-    event.preventDefault();
-  };
-
+  const { password, setPassword } = useStateValue();
   const navigate = useNavigate();
   if (localStorage.getItem("token")) {
     return <Navigate to={"/"} />;
   }
 
-  const onSubmit = async (e) => {
-    e.preventDefault();
-    // const name = e.target[0].value;
-    // const username = e.target[1].value;
-    // const password = e.target[2].value;
-
-    let user = {
-      name: name.current.value,
-      username: username.current.value,
-      password: password.current.value,
-    };
-
+  const onSubmit = async (values) => {
     try {
       let response = await axios.post(
-        "https://nt-shopping-list.onrender.com/api/auth",
+        "https://nt-shopping-list.onrender.com/api/users",
         {
-          name: user.name,
-          username: user.username,
-          password: user.password,
+          name: values.name,
+          username: values.username,
+          password: values.password,
         },
         {
           headers: {
@@ -65,10 +53,11 @@ function Registr() {
         }
       );
       console.log(response);
-      if (response.status === 200) {
+      if (response.status === 201) {
         toast.success("Signed up successfully");
         navigate("/");
         localStorage.setItem("token", response.data.token);
+        localStorage.setItem("user", JSON.stringify(response.data.user));
       }
     } catch (error) {
       toast.error("Invalid credentials");
@@ -86,54 +75,66 @@ function Registr() {
         </div>
         <div className="login_title2">
           <p>Register</p>
-          <form onSubmit={onSubmit} action="">
-            <input ref={name} type="text" placeholder="name" />
-            <div className="label">
-              <label>Username</label>
-              <input ref={username} type="text" placeholder="login" />
-            </div>
-            <div className="label">
-              <label>Password</label>
-              <Box
-                sx={{
-                  display: "flex",
-                  flexWrap: "wrap",
-                }}
-              >
-                <FormControl sx={{ m: 1, width: "100%" }} variant="outlined">
-                  <InputLabel htmlFor="outlined-adornment-password">
-                    Password
-                  </InputLabel>
-                  <OutlinedInput
-                    id="outlined-adornment-password"
-                    inputRef={password}
-                    type={showPassword ? "text" : "password"}
-                    endAdornment={
-                      <InputAdornment position="end">
-                        <IconButton
-                          aria-label={
-                            showPassword
-                              ? "hide the password"
-                              : "display the password"
-                          }
-                          onClick={handleClickShowPassword}
-                          onMouseDown={handleMouseDownPassword}
-                          onMouseUp={handleMouseUpPassword}
-                          edge="end"
-                        >
-                          {showPassword ? <VisibilityOff /> : <Visibility />}
-                        </IconButton>
-                      </InputAdornment>
-                    }
-                    label="Password"
+
+          <Formik
+            initialValues={{ name: "", username: "", password: "" }}
+            validationSchema={SignupSchema}
+            onSubmit={onSubmit}
+          >
+            {() => (
+              <Form>
+                <div>
+                  <label htmlFor="name"></label>
+                  <Field type="text" name="name" id="name" placeholder="name" />
+                  <ErrorMessage name="name" component="div" className="error" />
+                </div>
+
+                <div>
+                  <label htmlFor="username"></label>
+                  <Field
+                    type="text"
+                    name="username"
+                    id="username"
+                    placeholder="login"
                   />
-                </FormControl>
-              </Box>
-            </div>
-            <button className="btns">Submit</button>
-          </form>
+                  <ErrorMessage
+                    name="username"
+                    component="div"
+                    className="error"
+                  />
+                </div>
+
+                <div>
+                  <div className="password">
+                    <Field
+                      type={password ? "text" : "password"}
+                      name="password"
+                      id="pasword"
+                      placeholder="password"
+                    />
+
+                    {password ? (
+                      <RemoveRedEyeIcon onClick={() => setPassword(false)} />
+                    ) : (
+                      <VisibilityOffIcon onClick={() => setPassword(true)} />
+                    )}
+                  </div>
+
+                  <ErrorMessage
+                    name="password"
+                    component="div"
+                    className="error"
+                  />
+                </div>
+                <button className="btns" type="submit">
+                  Submit
+                </button>
+              </Form>
+            )}
+          </Formik>
+
           <span style={{ width: "100%", fontSize: "14px" }}>
-            No account yet? <NavLink to="/login">Log In</NavLink>{" "}
+            No account yet? <NavLink to="/login">Log In</NavLink>
           </span>
         </div>
       </div>

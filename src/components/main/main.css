@@ -2,93 +2,17 @@ main{
 
 
     width:calc(100% - 250px );
-    height: 90vh;
+    height: auto;
   
-    background-image: url("../../assets/mandarin.jpg");
-    background-size: cover;
-padding:40px
+    background-image: url("https://i.pinimg.com/736x/d6/09/c9/d609c9076e4f5d18da92ceb6dd6ab26a.jpg");
+    background-size:cover;
+padding:40px;
+margin-top: 70px;
+
+
+
+
+
     }
 
- main .item{
-
-width: 100%;
-background-color: #fff9;
-
-height: 250px;
-border-radius: 30px;
-display:grid;
-
-grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-
- }
- .title1{
-border-top-left-radius: 30px;
-border-bottom-left-radius: 30px;
-padding: 20px;
-display: flex;
-flex-direction: column;
-gap:20px
-
-
-
-
- }
-
- .title3{
-
-width:100px;
-height: 100px;
-border-radius: 100%;
-background-color:red ;
-display: flex;
-align-items: center;
-justify-content: center;
-
-    color: #fff;
-
- }
- .title3 h1{
-
-    font-size: 80px;
- }
-
-
- .title2{
-    border-top-right-radius: 30px;
-    border-bottom-right-radius: 30px;
-    
-    padding: 30px;
-     }
-     .title4{
-
-display:flex;
-align-items: center;
-gap:20px
-
-     }
-
-     .title10{
-
-display:flex;
-
-
-     }
-  .title10 h1{
-
-    font-size: 36px;
-  }
-
-  .title11{
-    display: flex;
-    flex-direction: column;
-    gap:10px
-  }
-
-  .title2{
-
-   
-    display: flex;
-    gap:10px;
  
-    justify-content: center;
-  }

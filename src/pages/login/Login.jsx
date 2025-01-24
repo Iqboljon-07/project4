@@ -4,50 +4,41 @@ import logo from "../../assets/logo.svg";
 import { Navigate, NavLink, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "./style.css";
-import Box from "@mui/material/Box";
-import IconButton from "@mui/material/IconButton";
 
-import OutlinedInput from "@mui/material/OutlinedInput";
-import InputLabel from "@mui/material/InputLabel";
-import InputAdornment from "@mui/material/InputAdornment";
+import * as Yup from "yup";
+import { ErrorMessage, Field, Form, Formik } from "formik";
 
-import FormControl from "@mui/material/FormControl";
+import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import { useStateValue } from "../../context";
+const validationSchema = Yup.object({
+  username: Yup.string()
+    .min(4, "Kamida 4 ta harf qatnashsin")
+    .max(10, "Ko'pi bilan 10 ta harf qatnashsin")
+    .required("Maydon bo'sh bo'lmasin"),
+  password: Yup.string()
+    .min(6, "Kamida 6 ta son qatnashsin")
+    .max(8, "Ko'pi bilan 8 ta bo'lsin")
+    .matches(/^(?=.*[A-Za-z])/, "Parol kamida bitta Harf qatnashsin")
+    .required("Maydon bo'sh bo'lmasin"),
+});
 
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
 function Login() {
-  const [showPassword, setShowPassword] = React.useState(false);
-
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
-
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
-  };
-
-  const handleMouseUpPassword = (event) => {
-    event.preventDefault();
-  };
+  const { password, setPassword } = useStateValue();
   const navigate = useNavigate();
   if (localStorage.getItem("token")) {
-    return <Navigate to={"/"} />;
+    return <Navigate to="/" />;
   }
-  const username = React.useRef(null);
-  const password = React.useRef(null);
-  const onSubmit = async (e) => {
-    e.preventDefault();
-    const user = {
-      username: username.current.value,
-      password: password.current.value,
-    };
-    console.log(user.username);
 
+  const onSubmit = (values) => {
+    console.log(values);
     (async () => {
       try {
         let response = await axios.post(
           "https://nt-shopping-list.onrender.com/api/auth",
           {
-            username: user.username,
-            password: user.password,
+            username: values.username,
+            password: values.password,
           },
 
           {
@@ -80,51 +71,57 @@ function Login() {
         </div>
         <div className="login_title2">
           <p>Sign In</p>
-          <form onSubmit={onSubmit} action="">
-            <div className="label">
-              <label>Username</label>
-              <input ref={username} type="text" placeholder="login" />
-            </div>
-            <div className="label">
-              <label>Password</label>
-              <Box
-                sx={{
-                  display: "flex",
-                  flexWrap: "wrap",
-                }}
-              >
-                <FormControl sx={{ m: 1, width: "100%" }} variant="outlined">
-                  <InputLabel htmlFor="outlined-adornment-password">
-                    Password
-                  </InputLabel>
-                  <OutlinedInput
-                    inputRef={password}
-                    id="outlined-adornment-password"
-                    type={showPassword ? "text" : "password"}
-                    endAdornment={
-                      <InputAdornment position="end">
-                        <IconButton
-                          aria-label={
-                            showPassword
-                              ? "hide the password"
-                              : "display the password"
-                          }
-                          onClick={handleClickShowPassword}
-                          onMouseDown={handleMouseDownPassword}
-                          onMouseUp={handleMouseUpPassword}
-                          edge="end"
-                        >
-                          {showPassword ? <VisibilityOff /> : <Visibility />}
-                        </IconButton>
-                      </InputAdornment>
-                    }
-                    label="Password"
+          <Formik
+            initialValues={{ username: "", password: "" }}
+            validationSchema={validationSchema}
+            onSubmit={onSubmit}
+          >
+            {() => (
+              <Form>
+                <div>
+                  <label htmlFor="username"></label>
+                  <Field
+                    type="text"
+                    name="username"
+                    id="username"
+                    placeholder="login"
                   />
-                </FormControl>
-              </Box>
-            </div>
-            <button className="btns">Submit</button>
-          </form>
+                  <ErrorMessage
+                    name="username"
+                    component="div"
+                    className="error"
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="password"></label>
+                  <div className="password">
+                    <Field
+                      type={password ? "text" : "password"}
+                      name="password"
+                      id="password"
+                      placeholder="password"
+                    />
+                    {password ? (
+                      <RemoveRedEyeIcon onClick={() => setPassword(false)} />
+                    ) : (
+                      <VisibilityOffIcon onClick={() => setPassword(true)} />
+                    )}
+                  </div>
+                  <ErrorMessage
+                    name="password"
+                    component="div"
+                    className="error"
+                  />
+                </div>
+
+                <button className="btns" type="submit">
+                  Submit
+                </button>
+              </Form>
+            )}
+          </Formik>
+
           <span style={{ width: "100%", fontSize: "14px" }}>
             No account yet? <NavLink to="/registr">Create One.</NavLink>{" "}
           </span>

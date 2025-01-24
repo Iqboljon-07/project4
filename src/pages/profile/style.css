@@ -1,6 +1,9 @@
 .global_item{
 
     display: flex;
+    height:200vh;
+
+   
    
     
 }

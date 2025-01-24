@@ -78,7 +78,8 @@ gap:20px
   border-radius: 5px;
   outline: none;
   border: none;
-  background-color: #c0ccdc;
+  width: 100%;
+  background-color: #f0f8ff;
   text-indent: 10px;
     
     }
@@ -113,6 +114,32 @@ border:solid 2px blue;
 display: flex;
 flex-direction: column;
 gap:5px;
+
+
+    }
+    .error{
+
+        color: red;
+        font-size: 14px;
+        margin-top: 5px;
+
+    }
+    .password{
+
+display: flex;
+align-items: center;
+justify-content: center;
+width: 100%;
+background-color: #f0f8ff;
+border-radius:5px ;
+
+    }
+    .password button{
+width:50px;
+height: 40px;
+display: flex;
+align-items: center;
+justify-content: center;
 
 
     }
